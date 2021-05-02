@@ -20,7 +20,7 @@ public class Sample_Demo {
 	
 	
 	
-	/*-> here we can write normal testng file from java class after that inorde to create that java file to test suite just rt-click on java file -> testng - >select convet to testng ==>it creates testng suite.xml file
+	/*-> here we can write normal testng file from java class after that inorder to create that java file to test suite just rt-click on java file -> testng - >select convet to testng ==>it creates testng suite.xml file
 
 
 			==> in pom.xml ==> here we need to create build tag and go to maven repository site : https://maven.apache.org/surefire/maven-surefire-plugin/examples/testng.html 
@@ -35,6 +35,8 @@ public class Sample_Demo {
 		System.setProperty("webdriver.chrome.driver", "C://TESTING TOOLS - SOFTWARES/chromedriver.exe");
 		WebDriver driver = new ChromeDriver();
 		driver.get("https://www.javatpoint.com/");
+		// remove all cookies
+		//driver.manage().deleteAllCookies();
 		driver.manage().window().maximize();
 		
 		

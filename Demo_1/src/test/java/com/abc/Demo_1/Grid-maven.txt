@@ -1,0 +1,597 @@
+
+Introduction
+		URL:--->
+		https://github.com/SeleniumHQ/selenium/wiki/Grid2
+
+Grid allows you to :
+
+    1. scale by distributing tests on several machines ( parallel execution )
+
+    2. manage multiple environments from a central point, making it easy 
+        to run the tests against a vast combination of browsers / OS.
+
+
+Download selenium stand alone jar file:
+
+
+	URL:--->http://selenium-release.storage.googleapis.com/index.html
+	 create empty folder name it as grid
+	save jar file into grid folder
+
+
+
+---------------------------Grid Configuration------------------>>
+
+
+The Hub is the central point that will receive all the test request and 
+	distribute them to the right nodes. 
+
+
+Note:-->   move to jar folder--> Hold Shift---> 
+		use Right click---> Select open command window here
+
+
+//Run hub using below command
+
+java -jar selenium-server-standalone-2.53.1.jar  -role hub
+
+
+//Run global node using below command
+
+java -jar selenium-server-standalone-2.53.1.jar -role node -hub http://localhost:4444/grid/register
+
+
+
+//Run Specific node with different requirement
+
+java -jar selenium-server-standalone-2.53.1.jar -role node -port 1234  -hub http://localhost:4444/grid/register -browser browserName=firefox,maxInstances=2,platform=MAC
+                                                                             
+
+                                                               here u can use :  -hub http://49.171.50.34:4444/grid/register  --> this is ip of other system u can use it instead of above command
+
+
+//Run Specific node with Diff OS and Instance
+java -jar selenium-server-standalone-2.53.1.jar -role node -port 1111  -hub http://localhost:4444/grid/register -browser browserName=chrome,maxInstances=2,platform=LINUX 
+
+
+
+	DesiredCapabilities capability = DesiredCapabilities.firefox();
+	  
+	  WebDriver driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), capability);
+	  driver.get("http://google.com");
+	  driver.manage().window().maximize();
+
+
+-------------------------Maven Configuration-----------------------------------------------------------
+
+
+====> http://www.testerinyou.com/2015/08/create-sample-maven-project.html  -- MAVEN project creation
+
+
+https://www.youtube.com/watch?v=t5hoD4D0Jo0&index=2&list=PLFGoYjJG_fqrY1RKpMmoVxMzL57WNc8cf  == refer this site form maven == by naveen --*********
+
+
+
+maven life cycle :
+----------------
+maven is a build automation tool
+
+maven life cycle : it follws 3 cyclces
+
+1)maven compile : it compiles all java classes ,code here we use maven compiler plugin  -- by using this plugin we can complile the code and this plug in pom.xml under build tag
+
+2)maven test : it test all test cases like unit test cases , functional test cases , integration test cases  -- heree it requires maven surefire plugin -- to run test cases by using this plugin in pom.xml under build tag
+
+3)maven resoure - jar : it creates jar files after testing the test cases == like it creates jar files ,war files etc -- here it requre maven resource plugin  -- add this plug in build tag - to create jar filess
+
+
+===> when ever u want to run maven project -- >right click on project -- select maven test -- to run only test cases
+                                              "      "                 --> select maven build -- in goals u write - clean install     == like that u need to run the maven project
+
+                                                                       --> select maven install -- it compiles the code ,run the test cases and creates a jar file in target folder
+
+
+==> if we use "mvn clean install" from command prompt -> it creates a "SNAPSHOT.JAR " file in target folder which is useful for testing and deploying in server i.e in jenkins 
+we have deploy tab --> go to there and install deploy plug in and restart jenkins and and in post build actions u have a option deploy jar/war/ear files and give the path of the jar file
+and run through tomcat server with local host 8080/project name and it will run for that we need to install apache tomcat and give the path in jenkins .it compiles the code ,run the test cases and creates a jar file in target folder
+
+==>if we use "mvn test" from  command prompt --> it only executes test cases  -- in target folder it creates --  surefire reports folder
+
+==> if we use mvn compile ===> it only complies java files and it creates a classes folder in target folder with app.class files
+
+==> we can give mvn clean --> to clean the project
+
+==> we can give mvn test -compile  == > it will compile all test classes
+
+==> we can give mvn install == > it generates snapshot.jar files in target folder and deploy this jar file in servers like jboss / tomcat install in your system with http://localhost:8080/application name
+
+==> **** if we use " mvn -DskipTests" from command prompt it skips all test cases and directly build the project in order to save time. it compiles ,tests and creates jar files
+
+
+
+=> by using  war files i.e sample.war / ear files we can deploy them in server to run the application. in java with spring ,hibernate appl we get war files
+
+
+
+https://www.youtube.com/watch?v=wTUqYxR5XF8
+
+https://www.youtube.com/watch?v=-3yT9VBuDaE
+
+https://www.youtube.com/watch?v=t5hoD4D0Jo0&index=2&list=PLFGoYjJG_fqrY1RKpMmoVxMzL57WNc8cf  == refer this site form maven
+
+
+	Maven is a management tool it build projects using project object model [POM]
+	
+
+
+1. Make sure java is installed
+
+	cmd:--> java -version
+
+navigation to open properties window:--->
+
+	start menu---> right click on computer---> properties---> Adavnced system seetings
+	---> Click Environment Variable
+
+
+2.Set Environment Variable With JAVA_HOME , and specify value as java location
+
+	
+	JAVA_HOME   C:\Program Files\Java\jdk1.8.0_20
+
+
+
+3.Download maven
+
+	https://maven.apache.org/download.cgi
+
+	Download latest zip format file  [binary]
+
+	Create folder in any drive
+	
+	copy zip file and unZip file
+
+
+4.Set Environment path for Maven with MAVEN_HOME
+
+
+	MAVEN_HOME  C:\maven\apache-maven-3.3.1
+
+
+
+5.Append maven path to system path variable
+	
+
+		;C:\maven\apache-maven-3.3.1\bin
+    System path	;%MAVEN_HOME%\bin
+
+
+6.Append java path to system path variable
+
+     System path:---->
+			%JAVA_HOME%\bin;
+
+-------------Verify maven configuration
+
+	cmd : mvn --version
+
+
+
+------------------Download mvn plugin  from eclipse market places
+
+
+	Help menu---> Market places--> search for maven----> 
+	if Eclipse intergration for maven found install plugin
+
+
+Creation of maven project in eclipse:--->
+
+nav:--> In eclipse---> File--->New--->Others---->maven --->click mavenproject
+	--->Click next
+
+	--> select create simple project
+
+	--> Enter Group id(package name) as com.webdriver
+	--> Enter artificat id(name of project) selenium project
+
+
+	After creation of project-------> under project click on pom.xml
+
+
+	--. Add dependencies to pom.xml
+
+get this dependencies in  http://mvnrepository.com/search
+
+  <dependencies>
+  
+  		<dependency>
+       			 <groupId>org.seleniumhq.selenium</groupId>
+      			  <artifactId>selenium-java</artifactId>
+       			 <version>2.46.0</version>
+    		</dependency>  
+    
+    		<dependency>
+  			<groupId>org.testng</groupId>
+  			<artifactId>testng</artifactId>
+ 			<version>6.1.1</version>
+  			<scope>test</scope>
+		</dependency>
+  
+  </dependencies>
+
+
+
+
+Note:--> After completed adding dependencies, Right click on maven project
+		--->Select Run As--->Maven Install
+
+
+	Refresth maven project once
+	you can find package jar file under target folder
+
+
+
+Naviage to pom.xml folder---->   i.e go to project folder where it is  first hold "shift key" + rt-click on project -- > open with command prompt --> then u can use below commands to run i.e  C:\Workspace_MAVEN\sample_maven > mvn test
+
+
+
+	--> Open Command prompt
+
+	cmd:-->    mvn install
+
+		it create snapshot of your project and packaged all environment to jar file
+		, Information you found at target folder
+	
+
+	cmd--> mvn eclipse:eclipse 
+		
+		above command update any scripts and modification in eclipse
+
+	cmd--> mvn validate
+
+		above command Create snap shot in your folder,
+			Verify maven packaged project or not
+
+	cmd--> mvn compile
+		
+		above command list out number of resources to compile
+
+	cmd--> mvn package
+
+		Execute all tests available
+
+	cmd --> mvn test
+
+		it execute resources available under maven project
+
+
+
+==> Execute TestNG tests with Maven   or  Invoking TestNG xml from the pom in maven
+------------------------------------------------------------------------------------
+
+-> here we can write normal testng file from java class after that inorde to create that java file to test suite just rt-click on java file -> testng - >select convet to testng ==>it creates testng suite.xml file
+
+
+==> in pom.xml ==> here we need to create build tag and go to maven repository site : https://maven.apache.org/surefire/maven-surefire-plugin/examples/testng.html 
+ and copy paste Using Suite XML Files code inorder to run suit testng file from pom.xml file of maven project
+ just clean the project once and go to command prompt :to go location of the project till pom.xml then give mvn clean test : it will run from commnad
+ prompt it self or u can directly rt-click on project build maven test select  -->
+
+ if u want to run individual test cases use "include" tag and mention the testcase u want to run -->
+
+ 
+in pom.xml file : 
+-------------
+ 
+
+ <build>
+	<plugins>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-surefire-plugin</artifactId>
+			<version>2.22.1</version>
+			<configuration>
+			<!-- for running individual tests u need to use include tag -->
+				<includes>
+					<include name="Sample_Demo"></include>
+				</includes>
+				
+							<!-- for running multiple tests u need to use test suite in that use testng.xml file tag -->
+				
+				<!-- <suiteXmlFiles> <suiteXmlFile>testng.xml</suiteXmlFile> </suiteXmlFiles -->
+				
+			</configuration>
+		</plugin>
+		
+		
+		
+		**NOTE ***: <!--  IF u are using both junit and testng ,in that u want to run only testng  not junit then u 
+		cause below code to disable junit run using properties tag as below mentioned -->
+		<BUILD>
+		<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.1</version>
+				<configuration>
+					<!-- for running individual tests u need to use include tag -->
+					<includes>
+						<include name="Sample_Demo"></include>
+					</includes>
+
+					<!-- for running multiple tests u need to use test suite in that use 
+						testng.xml file tag -->
+
+					<!-- <suiteXmlFiles> <suiteXmlFile>testng.xml</suiteXmlFile> </suiteXmlFiles -->
+					
+		<!--  IF u are using both junit and testng ,in that u want to run only testng  not junit then u 
+		cause below code to disable junit run using properties tag as below mentioned -->
+					
+			<!-- <properties>
+            <property>
+              <name>junit</name>
+              <value>false</value>
+            </property>
+          </properties>
+          <threadCount>1</threadCount> -->
+
+				</configuration>
+
+
+
+https://www.youtube.com/watch?v=wTUqYxR5XF8
+
+https://www.youtube.com/watch?v=-3yT9VBuDaE
+
+https://www.youtube.com/watch?v=t5hoD4D0Jo0&index=2&list=PLFGoYjJG_fqrY1RKpMmoVxMzL57WNc8cf  == refer this site form maven
+
+
+
+
+google search == 
+
+
+https://maven.apache.org/surefire/maven-surefire-plugin/examples/testng.html
+
+
+
+
+how to run bat files :
+-------------------
+cd path of project till pom.xml
+mvn clean install
+
+and save it as .bat file
+
+=========================================================================================================================
+
+GIT COMMANDS IN 3 LEVELS :
+-------------------------
+
+1) Contribute to an existing repository :
+---------------------
+first go the folder u want to work --> there right click and select git bash --> it opens git command prompt with that folder path --> then get code of 
+master to that local folder by using -- > git clone https://github.com/me/repo.git  ===> the code will get here in local folder
+
+then create your own branch from master and checkout to that branch  and make changes to that file and by using git GUI u can commit code to ur branch and later merge
+to master branch
+
+
+# download a repository on GitHub.com to our machine
+git clone https://github.com/me/repo.git
+
+# change into the `repo` directory
+cd repo
+
+# to know which branch u r in and what r the changes are not commited will be shoen in red color.
+git status
+
+# create a new branch to store any new changes
+git branch my-branch
+
+# switch to that branch (line of development)
+git checkout my-branch
+
+# make changes, for example, edit `file1.md` and `file2.md` using the text editor
+
+# stage the changed files
+git add file1.md file2.md  
+
+or u can write for adding all filed to git -- > git add .   ===> here dot is useful to add all files to git
+
+# take a snapshot of the staging area (anything that's been added)
+git commit -m "my snapshot"
+
+# push changes to github to our own branch
+git push --set-upstream origin my-branch
+
+# push changes to master
+git push --set-upstream origin master
+
+# update all remote tracking branches, and the currently checked out branch
+git pull
+
+
+# inorder to merge from dev branch to master
+git merge dev master
+
+
+
+2)Start a new repository and publish it to GitHub :
+----------------------------------------
+
+# create a new directory, and initialize it with git-specific functions
+git init my-repo
+
+# change into the `my-repo` directory
+cd my-repo
+
+# create the first file in the project
+touch README.md
+
+# git isn't aware of the file, stage it
+git add README.md
+
+# take a snapshot of the staging area
+git commit -m "add README to initial commit"
+
+# provide the path for the repository you created on github
+git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
+
+# push changes to github
+git push --set-upstream origin master
+
+3)contribute to an existing branch on GitHub :
+--------------------------------------------
+# assumption: a project called `repo` already exists on the machine, and a new branch has been pushed to GitHub.com since the last time changes were made locally
+
+# change into the `repo` directory
+cd repo
+
+# update all remote tracking branches, and the currently checked out branch
+git pull
+
+# change into the existing branch called `feature-a`
+git checkout feature-a
+
+# make changes, for example, edit `file1.md` using the text editor
+
+# stage the changed file
+git add file1.md
+
+# take a snapshot of the staging area
+git commit -m "edit file1"
+
+# push changes to github
+git push
+
+
+
+
+how to setup code and test in production server?
+------------------------------------------------
+https://www.youtube.com/results?search_query=how+to+deploy+code+in+production
+
+https://www.youtube.com/watch?v=9jRu-sFC8Xw  -- build and deployement progress in testing -- by naveen automation vidoes  -- ***
+
+
+
+
+GRID - NOTES :
+-----------
+
+https://www.youtube.com/watch?v=J_z7bnmHs7s  -- Selenium How to Configure Selenium Grid and Basic Program in Webdriver  -- notes are good
+
+
+
+
+Introduction to grid :
+-----------------------
+		URL:--->
+		https://github.com/SeleniumHQ/selenium/wiki/Grid2
+
+Grid allows you to :
+
+    1. scale by distributing tests on several machines ( parallel execution )
+
+    2. manage multiple environments from a central point, making it easy 
+        to run the tests against a vast combination of browsers / OS.
+
+
+Download selenium stand alone jar file:
+
+
+	URL:--->http://selenium-release.storage.googleapis.com/index.html
+	 create empty folder name it as grid
+	save jar file into grid folder
+
+
+
+---------------------------Grid Configuration------------------>>
+
+
+The Hub is the central point that will receive all the test request and 
+	distribute them to the right nodes. 
+
+
+Note:-->   move to jar folder--> Hold Shift---> 
+		use Right click---> Select open command window here
+
+
+//Run hub using below command
+
+java -jar selenium-server-standalone-2.53.1.jar  -role hub
+
+
+//Run global node using below command
+
+java -jar selenium-server-standalone-2.53.1.jar -role node -hub http://localhost:4444/grid/register -port 1234
+
+
+
+
+
+//Run Specific node with different requirement
+
+java -jar selenium-server-standalone-2.53.1.jar -role node -port 1234  -hub http://localhost:4444/grid/register -browser browserName=firefox,maxInstances=2,platform=MAC
+
+                                                              here u can use :  -hub http://49.171.50.34:4444/grid/register  --> this is ip of other system u can use it instead of above command
+
+
+
+//Run Specific node with Diff OS and Instance
+java -jar selenium-server-standalone-2.53.1.jar -role node -port 1111  -hub http://localhost:4444/grid/register -browser browserName=chrome,maxInstances=2,platform=LINUX 
+
+
+
+	DesiredCapabilities capability = DesiredCapabilities.firefox();
+	  
+	  WebDriver driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), capability);
+	  driver.get("http://google.com");
+	  driver.manage().window().maximize();
+	  
+
+
+
+------------------------------jenkins----------------------
+
+
+
+	url:--->https://wiki.jenkins-ci.org/display/JENKINS/Meet+Jenkins
+
+	install jenkins as windows default server:--->
+
+	https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+as+a+Windows+service
+
+	* Click on download button
+	* choose Operating System  [Windows]
+	* Save zip format file 
+	* Afte unzip file, receive setup file under folder 
+	* use double click to install jenkins...
+
+
+	* Create username and password for jenkins..
+
+	
+
+
+
+
+
+		
+
+
+
+
+
+	
+
+	
+
+
+
+
+
+
+
+
+

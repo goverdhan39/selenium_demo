@@ -52,6 +52,17 @@
 						testng.xml file tag -->
 
 					<!-- <suiteXmlFiles> <suiteXmlFile>testng.xml</suiteXmlFile> </suiteXmlFiles -->
+					
+		<!--  IF u are using both junit and testng ,in that u want to run only testng  not junit then u 
+		cause below code to disable junit run using properties tag as below mentioned -->
+					
+			<!-- <properties>
+            <property>
+              <name>junit</name>
+              <value>false</value>
+            </property>
+          </properties>
+          <threadCount>1</threadCount> -->
 
 				</configuration>
 			</plugin>
